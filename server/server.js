@@ -45,13 +45,10 @@ app.get('/', (req, res) => {
   res.send('MERN Blog API is running');
 });
 
-// Error handling middleware
+// Centralized error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(err.statusCode || 500).json({
-    success: false,
-    error: err.message || 'Server Error',
-  });
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
 });
 
 // Connect to MongoDB and start server

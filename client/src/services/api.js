@@ -40,11 +40,14 @@ api.interceptors.response.use(
 
 // Post API services
 export const postService = {
-  // Get all posts with optional pagination and filters
-  getAllPosts: async (page = 1, limit = 10, category = null) => {
+  // Get all posts with optional pagination, filters, and search
+  getAllPosts: async (page = 1, limit = 10, category = null, q = null) => {
     let url = `/posts?page=${page}&limit=${limit}`;
     if (category) {
       url += `&category=${category}`;
+    }
+    if (q) {
+      url += `&q=${encodeURIComponent(q)}`;
     }
     const response = await api.get(url);
     return response.data;
@@ -71,6 +74,12 @@ export const postService = {
   // Delete a post
   deletePost: async (id) => {
     const response = await api.delete(`/posts/${id}`);
+    return response.data;
+  },
+
+  // Get comments for a post
+  getComments: async (postId) => {
+    const response = await api.get(`/posts/${postId}/comments`);
     return response.data;
   },
 
